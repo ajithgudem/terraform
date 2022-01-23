@@ -14,36 +14,36 @@ resource "aws_instance" "instance" {
     nohup busybox httpd -f -p "${var.server_http_port}" &
     EOF
 
-    vpc_security_group_ids = [aws_security_group.instance-sg.id]
+    //vpc_security_group_ids = [aws_security_group.instance-sg.id]
 }
 
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "agudem-terraform-state"
-  # Enable versioning so we can see the full revision history of our
-  # state files
-  versioning {
-    enabled = true
-  }
-  # Enable server-side encryption by default
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
+# resource "aws_s3_bucket" "terraform_state" {
+#   bucket = "agudem-terraform-state"
+#   # Enable versioning so we can see the full revision history of our
+#   # state files
+#   versioning {
+#     enabled = true
+#   }
+#   # Enable server-side encryption by default
+#   server_side_encryption_configuration {
+#     rule {
+#       apply_server_side_encryption_by_default {
+#         sse_algorithm = "AES256"
+#       }
+#     }
+#   }
+# }
 
-resource "aws_dynamodb_table" "terraform_locks" {
-  name         = "agudem-terraform-locks"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
+# resource "aws_dynamodb_table" "terraform_locks" {
+#   name         = "agudem-terraform-locks"
+#   billing_mode = "PAY_PER_REQUEST"
+#   hash_key     = "LockID"
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
+# }
 
 terraform {
   backend "s3" {
